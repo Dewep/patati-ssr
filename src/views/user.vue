@@ -62,7 +62,7 @@ export default {
       if (this.usersData.error) {
         return this.usersData.error
       }
-      if (!user) {
+      if (!this.user) {
         return 'This user does not exist!'
       }
       return null

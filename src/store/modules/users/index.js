@@ -9,7 +9,7 @@ const getters = {
 }
 
 const actions = {
-  async loadUsers ({ commit }, {}) {
+  async loadUsers ({ commit }, data) {
     try {
       commit('SET_USERS_STATE', { loading: true, users: null, error: null })
       const response = await axios.get('https://jsonplaceholder.typicode.com/users')
@@ -17,7 +17,6 @@ const actions = {
     } catch (err) {
       commit('SET_USERS_STATE', { loading: false, users: null, error: err.message })
     }
-    return userApi.create(team, data)
   }
 }
 
