@@ -1,4 +1,4 @@
-module.exports = () => ({
+module.exports = {
   root: true,
   parserOptions: {
     parser: 'babel-eslint',
@@ -29,4 +29,4 @@ module.exports = () => ({
     'vue/name-property-casing': ['error', 'kebab-case'],
     'vue/max-attributes-per-line': [2, { 'singleline': 3 }]
   }
-})
+}
