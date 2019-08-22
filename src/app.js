@@ -7,6 +7,7 @@ import Vue from 'vue'
 
 import { sync as routerSync } from 'vuex-router-sync'
 import VueMeta from 'vue-meta'
+import './load-content'
 
 import { createRouter } from './router'
 import { createStore } from './store'

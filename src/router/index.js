@@ -16,8 +16,7 @@ export function createRouter () {
     routes: [
       { name: 'welcome', path: '', component: Welcome },
       { name: 'user', path: '/user/:username', component: User, props: true },
-      { name: 'about', path: '/about', component: About },
-      { path: '*', redirect: '/' }
+      { name: 'about', path: '/about', component: About }
     ]
   })
 }

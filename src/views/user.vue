@@ -87,25 +87,16 @@ export default {
     }
   },
 
-  serverPrefetch () {
-    return this.load()
-  },
-
   watch: {
-    users: {
-      immediate: true,
-      handler () {
-        if (!this.users && !this.loading) {
-          this.load()
-        }
-      }
-    }
+    username: 'loadContent'
   },
 
   methods: {
     ...mapActions(['loadUsers']),
-    load () {
-      return this.loadUsers({})
+    async loadContent () {
+      if (!this.users && !this.loading) {
+        await this.loadUsers({})
+      }
     }
   }
 }
