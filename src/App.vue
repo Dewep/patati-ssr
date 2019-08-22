@@ -1,7 +1,11 @@
 <template>
-  <main>
-    <h1>Coucou</h1>
-  </main>
+  <div>
+    <RouterView />
+
+    <p>
+      <small><i>VagaDewep</i></small>
+    </p>
+  </div>
 </template>
 
 <script>

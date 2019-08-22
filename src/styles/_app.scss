@@ -1,0 +1,23 @@
+@import 'variables.scss';
+
+body {
+  background: $bg-color;
+  color: $dark-color;
+}
+
+a,
+a:link,
+a:visited {
+  color: $primary-color;
+  text-decoration: none;
+}
+a:hover,
+a:focus,
+a:active,
+a.active {
+  text-decoration: underline;
+}
+
+.error {
+  color: $error-color;
+}
