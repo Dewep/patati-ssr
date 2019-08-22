@@ -1,0 +1,12 @@
+{
+  "name": "vuessr",
+  "version": "1.0.0",
+  "description": "Vue SSR",
+  "main": "index.js",
+  "author": "Fabien CASTERS",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
+  }
+}
