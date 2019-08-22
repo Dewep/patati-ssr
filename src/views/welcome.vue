@@ -34,6 +34,13 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'welcome',
 
+  metaInfo: {
+    title: 'Welcome',
+    meta: [
+      { name: 'description', content: 'Hello world' }
+    ]
+  },
+
   computed: {
     ...mapGetters(['usersData']),
     users () {

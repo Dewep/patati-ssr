@@ -50,13 +50,19 @@ export default {
     }
   },
 
+  metaInfo () {
+    return {
+      title: this.title
+    }
+  },
+
   computed: {
     ...mapGetters(['usersData']),
     users () {
       return this.usersData.users || null
     },
     user () {
-      return (this.usersData.users || []).find(user => user.username === this.username) || null
+      return (this.users || []).find(user => user.username === this.username) || null
     },
     error () {
       if (this.usersData.error) {

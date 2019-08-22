@@ -28,6 +28,7 @@ export default context => {
         // is used for the renderer, the state will automatically be
         // serialized and injected into the HTML as `window.__INITIAL_STATE__`.
         context.state = store.state
+        context.meta = app.$meta().inject()
       }
 
       // the Promise should resolve to the app instance so it can be rendered

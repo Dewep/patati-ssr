@@ -6,11 +6,17 @@ import './styles/entry.scss'
 import Vue from 'vue'
 
 import { sync as routerSync } from 'vuex-router-sync'
+import VueMeta from 'vue-meta'
 
 import { createRouter } from './router'
 import { createStore } from './store'
 
 import App from './App.vue'
+
+Vue.use(VueMeta, {
+  // optional pluginOptions
+  refreshOnceOnNavigation: true
+})
 
 export function createApp () {
   const router = createRouter()
