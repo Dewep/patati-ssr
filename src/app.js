@@ -1,23 +1,29 @@
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
+
+import './styles/entry.scss'
+
 import Vue from 'vue'
 
 import { sync as routerSync } from 'vuex-router-sync'
 
-import router from './router'
-import store from './store'
+import { createRouter } from './router'
+import { createStore } from './store'
 
 import App from './App.vue'
 
-import './styles/entry.scss'
+export function createApp () {
+  const router = createRouter()
+  const store = createStore()
 
-// sync the router with the vuex store, this registers `store.state.route`
-routerSync(store, router, { moduleName: 'route' })
+  // sync the router with the vuex store, this registers `store.state.route`
+  routerSync(store, router, { moduleName: 'route' })
 
-export default () => {
   const app = new Vue({
     router,
     store,
     render: h => h(App)
   })
 
-  return { app }
+  return { app, router, store }
 }

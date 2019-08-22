@@ -81,19 +81,26 @@ export default {
     }
   },
 
+  serverPrefetch () {
+    return this.load()
+  },
+
   watch: {
     users: {
       immediate: true,
       handler () {
         if (!this.users && !this.loading) {
-          this.loadUsers({})
+          this.load()
         }
       }
     }
   },
 
   methods: {
-    ...mapActions(['loadUsers'])
+    ...mapActions(['loadUsers']),
+    load () {
+      return this.loadUsers({})
+    }
   }
 }
 </script>

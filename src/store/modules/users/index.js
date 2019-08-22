@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const state = {
+const state = () => ({
   usersData: { loading: false, users: null, error: null }
-}
+})
 
 const getters = {
   usersData: state => state.usersData

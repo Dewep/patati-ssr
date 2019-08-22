@@ -7,15 +7,17 @@ import About from '../views/about.vue'
 
 Vue.use(Router)
 
-export default new Router({
-  mode: 'history',
+export function createRouter () {
+  return new Router({
+    mode: 'history',
 
-  linkActiveClass: 'active',
+    linkActiveClass: 'active',
 
-  routes: [
-    { name: 'welcome', path: '', component: Welcome },
-    { name: 'user', path: '/user/:username', component: User },
-    { name: 'about', path: '/about', component: About },
-    { path: '*', redirect: '/' }
-  ]
-})
+    routes: [
+      { name: 'welcome', path: '', component: Welcome },
+      { name: 'user', path: '/user/:username', component: User },
+      { name: 'about', path: '/about', component: About },
+      { path: '*', redirect: '/' }
+    ]
+  })
+}

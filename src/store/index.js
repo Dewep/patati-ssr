@@ -6,10 +6,10 @@ import plugins from './plugins'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
-  modules,
-  plugins,
-  strict: true
-})
-
-export default store
+export function createStore () {
+  return new Vuex.Store({
+    modules,
+    plugins,
+    strict: true
+  })
+}

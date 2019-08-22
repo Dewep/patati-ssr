@@ -7,7 +7,9 @@
       </RouterLink>
     </h1>
 
-    <div v-if="loading || !users" />
+    <div v-if="loading || !users">
+      Loading...
+    </div>
 
     <p v-else-if="error" class="error">
       {{ error }}
@@ -18,7 +20,7 @@
         v-for="user in users"
         :key="user.username"
       >
-        <RouterLink :to="{ name: 'user', params: { userSlug: user.username } }">
+        <RouterLink :to="{ name: 'user', params: { username: user.username } }">
           {{ user.name }} <small>{{ user.email }}</small>
         </RouterLink>
       </li>
@@ -45,19 +47,26 @@ export default {
     }
   },
 
+  serverPrefetch () {
+    return this.load()
+  },
+
   watch: {
     users: {
       immediate: true,
       handler () {
         if (!this.users && !this.loading) {
-          this.loadUsers({})
+          this.load()
         }
       }
     }
   },
 
   methods: {
-    ...mapActions(['loadUsers'])
+    ...mapActions(['loadUsers']),
+    load () {
+      return this.loadUsers({})
+    }
   }
 }
 </script>
