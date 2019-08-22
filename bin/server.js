@@ -11,21 +11,30 @@ const renderer = createBundleRenderer(
   require(resolve('../dist/vue-ssr-server-bundle.json')),
   {
     template: fs.readFileSync(resolve('../src/layout.html'), 'utf-8'),
-    clientManifest: require(resolve('../dist/vue-ssr-client-manifest.json')),
-  },
+    clientManifest: require(resolve('../dist/vue-ssr-client-manifest.json'))
+  }
 )
 
 const server = express()
 
-server.get('*', function(req, res) {
-  renderer.renderToString({}, (error, html) => {
+server.use('/dist', express.static(path.join(__dirname, '../dist')))
+server.use('/public', express.static(path.join(__dirname, '../public')))
+
+server.get('*', function (req, res) {
+  const context = { url: req.url }
+
+  renderer.renderToString(context, (error, html) => {
     if (error) {
-      res.status(500).send(error)
+      if (error.code === 404) {
+        res.status(404).end('Page not found')
+      } else {
+        res.status(500).end('Internal Server Error')
+      }
       console.debug(error)
       return
     }
 
-    res.send(html)
+    res.end(html)
   })
 })
 
