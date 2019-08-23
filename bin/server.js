@@ -21,7 +21,10 @@ server.use('/dist', express.static(path.join(__dirname, '../dist')))
 server.use('/public', express.static(path.join(__dirname, '../public')))
 
 server.get('*', function (req, res) {
-  const context = { url: req.url }
+  const context = {
+    url: req.url,
+    httpCode: 200
+  }
 
   renderer.renderToString(context, (error, html) => {
     if (error) {
@@ -34,6 +37,7 @@ server.get('*', function (req, res) {
       return
     }
 
+    res.status(context.httpCode || 200)
     res.end(html)
   })
 })

@@ -1,6 +1,9 @@
 import { createApp } from './app'
 
 export default context => {
+  const pageNotFound = new Error('Page not found')
+  pageNotFound.code = 404
+
   // since there could potentially be asynchronous route hooks or components,
   // we will be returning a Promise so that the server can wait until
   // everything is ready before rendering.
@@ -15,9 +18,7 @@ export default context => {
       const matchedComponents = router.getMatchedComponents()
       // no matched routes, reject with 404
       if (!matchedComponents.length) {
-        const err = new Error('404')
-        err.code = 404
-        return reject(err)
+        return reject(pageNotFound)
       }
 
       // This `rendered` hook is called when the app has finished rendering
@@ -29,6 +30,9 @@ export default context => {
         // serialized and injected into the HTML as `window.__INITIAL_STATE__`.
         context.state = store.state
         context.meta = app.$meta().inject()
+        if (context.meta.httpCode) {
+          context.httpCode = context.meta.httpCode
+        }
       }
 
       // the Promise should resolve to the app instance so it can be rendered

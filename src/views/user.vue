@@ -52,7 +52,8 @@ export default {
 
   metaInfo () {
     return {
-      title: this.title
+      title: this.title,
+      httpCode: this.user ? 200 : 404
     }
   },
 
