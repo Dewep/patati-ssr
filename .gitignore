@@ -2,9 +2,4 @@ node_modules/
 npm-debug.log
 # package-lock.json
 
-public/assets/*.js
-public/assets/*.css
-public/assets/*.map
-public/assets/*.eot
-public/assets/*.svg
-public/index.html
+dist/
