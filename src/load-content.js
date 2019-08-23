@@ -3,15 +3,15 @@ import Vue from 'vue'
 const LoadContentPlugin = {
   install (Vue, options) {
     Vue.mixin({
-      created () {
+      mounted () {
         if (this.loadContent) {
           return this.loadContent()
         }
       },
 
-      serverPrefetch () {
+      async serverPrefetch () {
         if (this.loadContent) {
-          return this.loadContent()
+          await this.loadContent()
         }
       }
     })
