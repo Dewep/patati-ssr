@@ -1,15 +1,19 @@
 import axios from 'axios'
 
-const state = () => ({
-  usersData: { loading: false, users: null, error: null }
-})
+const state = {
+  usersData: {
+    loading: false,
+    users: null,
+    error: null
+  }
+}
 
 const getters = {
   usersData: state => state.usersData
 }
 
 const actions = {
-  async loadUsers ({ commit }, data) {
+  async loadUsers ({ commit }) {
     try {
       commit('SET_USERS_STATE', { loading: true, users: null, error: null })
       const response = await axios.get('https://jsonplaceholder.typicode.com/users')
@@ -29,11 +33,8 @@ const mutations = {
 }
 
 export default {
-  // namespaced: true,
   state,
   getters,
   actions,
-  mutations,
-  modules: {
-  }
+  mutations
 }

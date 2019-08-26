@@ -1,5 +1,1 @@
-import debugCommit from './debug-commit'
-
-export default [
-  debugCommit
-]
+export default []

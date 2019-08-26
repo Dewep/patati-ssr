@@ -1,13 +1,14 @@
 'use strict'
 
-const fs = require('fs')
-const path = require('path')
 const express = require('express')
+const path = require('path')
+const fs = require('fs')
 const { createBundleRenderer } = require('vue-server-renderer')
+const bundleRendererHandler = require('../lib/vue-ssr-handler')
 
-const resolve = file => path.resolve(__dirname, file)
+const resolve = relativePath => path.resolve(__dirname, relativePath)
 
-const renderer = createBundleRenderer(
+const bundleRenderer = createBundleRenderer(
   require(resolve('../dist/vue-ssr-server-bundle.json')),
   {
     template: fs.readFileSync(resolve('../src/layout.html'), 'utf-8'),
@@ -17,31 +18,13 @@ const renderer = createBundleRenderer(
 
 const server = express()
 
-server.use('/dist', express.static(path.join(__dirname, '../dist')))
-server.use('/public', express.static(path.join(__dirname, '../public')))
+// Add handler for static file in dist/ directory
+server.use('/dist', express.static(resolve('../dist')))
+// Add SSR handler for all HTTP routes
+server.get('*', bundleRendererHandler(bundleRenderer))
 
-server.get('*', function (req, res) {
-  const context = {
-    url: req.url,
-    httpCode: 200
-  }
+const port = process.env.LISTEN_PORT || 8080
 
-  renderer.renderToString(context, (error, html) => {
-    if (error) {
-      if (error.code === 404) {
-        res.status(404).end('Page not found')
-      } else {
-        res.status(500).end('Internal Server Error')
-      }
-      console.debug(error)
-      return
-    }
-
-    res.status(context.httpCode || 200)
-    res.end(html)
-  })
-})
-
-server.listen(8080, () => {
-  console.log('Server started at localhost:8080')
+server.listen(port, () => {
+  console.log(`Server started at localhost:${port}`)
 })

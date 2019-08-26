@@ -1,9 +1,11 @@
-const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
+const { resolve, value } = require('./utils')
 
 module.exports = {
+  mode: value({ production: 'production', development: 'development' }),
+
   output: {
-    path: path.resolve(__dirname, '../dist'),
+    path: resolve('../dist'),
     publicPath: '/dist/'
   },
 
@@ -20,36 +22,15 @@ module.exports = {
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          compilerOptions: {
-            preserveWhitespace: false
-          }
-        }
+        loader: 'vue-loader'
       },
       {
-        test: /\.(sc|sa|c)ss$/,
+        test: /\.(sc|c)ss$/,
         use: [
           'vue-style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              url: false
-            }
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              includePaths: [
-                path.resolve(__dirname, '../src/styles')
-              ]
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2|jpg|png)$/,
-        use: 'file-loader?name=[name].[ext]'
+          'css-loader',
+          'sass-loader'
+        ],
       }
     ]
   },

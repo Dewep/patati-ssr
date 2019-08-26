@@ -1,17 +1,21 @@
 <template>
   <div id="app">
-    <RouterView />
-
-    <p>
-      <small><i>VagaDewep</i></small>
+    <h1>Patati & Patata</h1>
+    <h2>by Dewep & Vaga</h2>
+    <nav>
       <RouterLink :to="{ name: 'welcome' }">
-        Home
+        Welcome
       </RouterLink>
-    </p>
+      <RouterLink :to="{ name: 'users' }">
+        Users
+      </RouterLink>
+    </nav>
+    <RouterView />
   </div>
 </template>
 
 <script>
-export default {
-}
+  export default {
+    name: 'App'
+  }
 </script>
