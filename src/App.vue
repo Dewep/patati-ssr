@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Patati & Patata</h1>
+    <h1>Je suis un Developpeur</h1>
     <h2>by Dewep & Vaga</h2>
     <nav>
       <RouterLink :to="{ name: 'welcome' }">
