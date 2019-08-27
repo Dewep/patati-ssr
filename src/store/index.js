@@ -10,6 +10,6 @@ export function createStore () {
   return new Vuex.Store({
     modules,
     plugins,
-    strict: true
+    strict: process.env.NODE_ENV !== 'production'
   })
 }

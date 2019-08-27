@@ -1,17 +1,12 @@
 <template>
-  <div>
-    <h1 class="welcome">
-      Patati &amp; Patata
-      <RouterLink :to="{ name: 'about' }">
-        <small>about</small>
-      </RouterLink>
-    </h1>
+  <section>
+    <h1>Users</h1>
 
-    <div v-if="loading || !users">
+    <p v-if="loading || !users">
       Loading...
-    </div>
+    </p>
 
-    <p v-else-if="error" class="error">
+    <p v-else-if="error">
       {{ error }}
     </p>
 
@@ -21,24 +16,24 @@
         :key="user.username"
       >
         <RouterLink :to="{ name: 'user', params: { username: user.username } }">
-          {{ user.name }} <small>{{ user.email }}</small>
+          {{ user.name }} {{ user.email }}
         </RouterLink>
       </li>
     </ul>
-  </div>
+  </section>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import loadContent from '../mixins/loadContent'
 
 export default {
-  name: 'welcome',
+  name: 'Users',
+
+  mixins: [ loadContent ],
 
   metaInfo: {
-    title: 'Welcome',
-    meta: [
-      { name: 'description', content: 'Hello world' }
-    ]
+    title: 'Users'
   },
 
   computed: {
@@ -56,7 +51,7 @@ export default {
 
   methods: {
     ...mapActions(['loadUsers']),
-    async loadContent () {
+    async loadContent() {
       if (!this.users && !this.loading) {
         await this.loadUsers({})
       }
@@ -64,11 +59,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-@import 'variables.scss';
-
-h1.welcome {
-  color: $warning-color;
-}
-</style>

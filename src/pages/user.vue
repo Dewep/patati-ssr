@@ -1,47 +1,45 @@
 <template>
-  <div>
-    <h1 class="welcome">
-      {{ title }}
-    </h1>
-
-    <p v-if="error" class="error">
+  <section>
+    <h1>{{ title }}</h1>
+    <p v-if="error">
       {{ error }}
     </p>
 
-    <div v-if="user">
-      <table>
-        <tbody>
-          <tr>
-            <th>Name</th>
-            <td>{{ user.name }}</td>
-          </tr>
-          <tr>
-            <th>Identifier</th>
-            <td><code>#{{ user.id }} : {{ user.username }}</code></td>
-          </tr>
-          <tr>
-            <th>Email</th>
-            <td>{{ user.email }}</td>
-          </tr>
-          <tr>
-            <th>Phone</th>
-            <td>{{ user.phone }}</td>
-          </tr>
-          <tr>
-            <th>Website</th>
-            <td><a :href="user.website">{{ user.website }}</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+    <table v-if="user">
+      <tbody>
+        <tr>
+          <th>Name</th>
+          <td>{{ user.name }}</td>
+        </tr>
+        <tr>
+          <th>Identifier</th>
+          <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+          <th>Phone</th>
+          <td>{{ user.phone }}</td>
+        </tr>
+        <tr>
+          <th>Website</th>
+          <td><a :href="user.website">{{ user.website }}</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import loadContent from '../mixins/loadContent'
 
 export default {
-  name: 'user',
+  name: 'User',
+
+  mixins: [ loadContent ],
 
   props: {
     username: {
@@ -52,8 +50,7 @@ export default {
 
   metaInfo () {
     return {
-      title: this.title,
-      httpCode: this.user ? 200 : 404
+      title: this.title
     }
   },
 

@@ -1,47 +1,50 @@
 'use strict'
 
-const fs = require('fs')
-const path = require('path')
 const express = require('express')
-const { createBundleRenderer } = require('vue-server-renderer')
+const path = require('path')
+const fs = require('fs')
 
-const resolve = file => path.resolve(__dirname, file)
+const {
+  BundleRenderer,
+  HotBundleRendererBuilder,
+  bundleHandler
+} = require('../lib/vue-ssr-bundler')
 
-const renderer = createBundleRenderer(
-  require(resolve('../dist/vue-ssr-server-bundle.json')),
-  {
-    template: fs.readFileSync(resolve('../src/layout.html'), 'utf-8'),
-    clientManifest: require(resolve('../dist/vue-ssr-client-manifest.json'))
+const resolve = relativePath => path.resolve(__dirname, relativePath)
+
+async function main () {
+  const app = express()
+
+  let bundleRenderer
+  if (process.env.NODE_ENV === 'production') {
+    // Generate static bundle renderer
+    bundleRenderer = new BundleRenderer()
+    bundleRenderer.build({
+      clientManifest: require(resolve('../dist/vue-ssr-client-manifest.json')),
+      serverBundle: require(resolve('../dist/vue-ssr-server-bundle.json')),
+      template: fs.readFileSync(resolve('../src/layout.html'), 'utf-8')
+    })
+  } else {
+    // Generate dynamique bundle renderer (development only)
+    const hotBundleRendererBuilder = new HotBundleRendererBuilder({
+      webpackClientConfig: require(resolve('../build/webpack.client.js')),
+      webpackServerConfig: require(resolve('../build/webpack.server.js')),
+      template: fs.readFileSync(resolve('../src/layout.html'), 'utf-8')
+    })
+    await hotBundleRendererBuilder.use(app).then()
+    bundleRenderer = hotBundleRendererBuilder.getBundleRenderer()
   }
-)
 
-const server = express()
+  // Add handler for static file in dist/ directory
+  app.use('/dist', express.static(resolve('../dist')))
+  // Add SSR handler for all HTTP routes
+  app.get('*', bundleHandler(bundleRenderer))
 
-server.use('/dist', express.static(path.join(__dirname, '../dist')))
-server.use('/public', express.static(path.join(__dirname, '../public')))
+  const port = process.env.LISTEN_PORT || 8080
 
-server.get('*', function (req, res) {
-  const context = {
-    url: req.url,
-    httpCode: 200
-  }
-
-  renderer.renderToString(context, (error, html) => {
-    if (error) {
-      if (error.code === 404) {
-        res.status(404).end('Page not found')
-      } else {
-        res.status(500).end('Internal Server Error')
-      }
-      console.debug(error)
-      return
-    }
-
-    res.status(context.httpCode || 200)
-    res.end(html)
+  app.listen(port, () => {
+    console.log(`Server started at localhost:${port}`)
   })
-})
+}
 
-server.listen(8080, () => {
-  console.log('Server started at localhost:8080')
-})
+main()
